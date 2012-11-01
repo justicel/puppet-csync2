@@ -11,26 +11,22 @@ This module utilizes a resource collector on each defined node to build a sync c
 
 Example usage below, all configs go into your node configuration:
 
-class {'csync2':
-}
+class {'csync2': }
 
 If you have the example42 firewall module installed you can open ports automatically:
-class {'csync2':
+`class {'csync2':
   firewall        => true,
-  firewall_tool   => 'iptables',
-}
+  firewall_tool   => 'iptables', }
 
 @@csync2::groupnode { $fqdn:
-    group       => '<appname>',
-  }
+    group       => '<appname>', }
 
 csync2::group { '<appname>':
   includes => ["path1", "path2"],
   excludes => '*.svn',
   auto     => 'younger',
-  cron     => 'true',
-}
-
+  cron     => 'true', }
+`
 If you use cron in your configuration this will enable the ability to have inotify based syncing. 
 If you don't enable cron then you will have to manually add a cron entry or similar.
 
