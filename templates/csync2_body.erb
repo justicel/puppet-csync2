@@ -1,0 +1,32 @@
+
+	key <%= configpath %>/<%= group_key %>;
+	
+<% includes.sort.each do |incval| -%>
+<% if incval.is_a?(Array) -%>
+<% incval.each do |incdir| -%>
+	
+include <%= incdir %>;
+	
+<% end -%>
+<% else -%>
+include <%= incval %>;
+<% end -%>
+<% end -%>
+
+<% excludes.sort.each do |excval| -%>
+<% if excval.is_a?(Array) -%>
+<% excval.each do |excdir| -%>
+
+exclude <%= excdir %>;
+
+<% end -%>
+<% else -%>
+exclude <%= excval %>;
+<%end -%>
+<%end -%>
+
+#Setting for automatic file dispute resolution
+auto <%= auto %>;
+
+}
+
