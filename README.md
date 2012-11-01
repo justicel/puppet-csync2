@@ -1,3 +1,6 @@
+Puppet Csync2   0.0.1
+=====================
+
 This is the first release of a csync2 module for Puppet.
 It is likely buggy, crappy and will eat you puppet server.
 
@@ -14,7 +17,8 @@ Example usage below, all configs go into your node configuration:
 class {'csync2': }
 
 If you have the example42 firewall module installed you can open ports automatically:
-`class {'csync2':
+
+class {'csync2':
   firewall        => true,
   firewall_tool   => 'iptables', }
 
@@ -26,7 +30,7 @@ csync2::group { '<appname>':
   excludes => '*.svn',
   auto     => 'younger',
   cron     => 'true', }
-`
+
 If you use cron in your configuration this will enable the ability to have inotify based syncing. 
 If you don't enable cron then you will have to manually add a cron entry or similar.
 
