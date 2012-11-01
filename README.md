@@ -34,4 +34,8 @@ If you have the example42 firewall module installed you can open ports automatic
 If you use cron in your configuration this will enable the ability to have inotify based syncing. 
 If you don't enable cron then you will have to manually add a cron entry or similar.
 
+Additionally, you will need to define a csync2 GROUP key. To do this you will need to have a csync2
+installation somewhere. You will then use 'csync2 -k <keyfile>' to write the key. Copy this over to
+the files/keys folder to use.
+
 For more general csync2 documentation, please refer to: http://oss.linbit.com/csync2/

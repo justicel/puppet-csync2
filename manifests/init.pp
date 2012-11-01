@@ -1,8 +1,17 @@
+#The base csync2 resource initialization. We can define some basic things such as if we should enable 
+#the firewall and what tools to use if so.
+#Options:
+#[firewall] This uses example42's firewall module by default. Others could be written. Probably want to
+#use 'enable' here.
+#[firewall_tool] The firewall type to utilize. By default is iptables
+#[firewall_src] The source address for incoming connections. Likely will be your local net
+#[firewall_dst] The incoming IP on the server/node to allow connections to.
+
 class csync2 (
-  $firewall      = params_lookup( 'firewall' , 'global' ),
-  $firewall_tool = params_lookup( 'firewall_tool' , 'global' ),
-  $firewall_src  = params_lookup( 'firewall_src' , 'global' ),
-  $firewall_dst  = params_lookup( 'firewall_dst' , 'global' ),
+  $firewall      = $csync2::params::firewall,
+  $firewall_tool = $csync2::params::firewall_tool,
+  $firewall_src  = $csync2::params::firewall_src,
+  $firewall_dst  = $csync2::params::firewall_dst,
 )
 inherits csync2::params 
 { 

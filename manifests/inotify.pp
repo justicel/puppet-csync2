@@ -1,3 +1,6 @@
+#Internal inotify class description. There isn't really much to edit here.
+#This defines a simple script which launches into the background on the node waiting for inotify data.
+
 class csync2::inotify (
 $syncfolders = undef,
 $sleeptimer = '5',
@@ -22,6 +25,7 @@ $sleeptimer = '5',
     notify  => Service['csync2-inotify'],
   }
 
+  #Define and start the inotify for csync service
   service { 'csync2-inotify':
     enable => true,
     ensure => running,
