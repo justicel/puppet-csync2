@@ -10,7 +10,7 @@
 define csync2::groupnode (
   $group    = 'default',
   $order    = '11',
-  $hostname = $::fqdn, 
+  $hostname = $::hostname, 
   $ipaddress = $::ipaddress,
   $configfile        = $csync2::params::configfile,
 ) {
