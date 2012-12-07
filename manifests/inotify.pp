@@ -29,7 +29,7 @@ $sleeptimer = '5',
   service { 'csync2-inotify':
     enable => true,
     ensure => running,
-    require => [ File['/etc/rc.d/init.d/csync2-inotify'], File['/usr/local/bin/csync2-inotify'],
+    require => [ File['/etc/rc.d/init.d/csync2-inotify'], File['/usr/local/bin/csync2-inotify'] ],
   }
 
 }
