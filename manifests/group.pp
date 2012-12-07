@@ -29,12 +29,13 @@ define csync2::group (
 ) {
 
   #Copy the key to the host
-  file { "${configpath}${group_key}":
-    source => "puppet:///modules/csync2/keys/${group_key}",
-    ensure => present,
-    group  => '0',
-    owner  => '0',
-    mode   => '0600',
+  file { "${configpath}/${group_key}":
+    source  => "puppet:///modules/csync2/keys/${group_key}",
+    ensure  => present,
+    replace => true,
+    group   => '0',
+    owner   => '0',
+    mode    => '0600',
   }
 
   #Define the csync2 group
