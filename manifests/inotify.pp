@@ -12,7 +12,7 @@ $sleeptimer = '5',
     mode    => 0654,
     owner   => root,
     group   => 0,
-    content => template("csync2/inotify_body.erb")
+    content => template("csync2/inotify_body.erb"),
   }
 
   #The inotify cron
@@ -29,7 +29,7 @@ $sleeptimer = '5',
   service { 'csync2-inotify':
     enable => true,
     ensure => running,
-    require => File['/etc/rc.d/init.d/csync2-inotify'],
+    require => [ File['/etc/rc.d/init.d/csync2-inotify'], File['/usr/local/bin/csync2-inotify'],
   }
 
 }
