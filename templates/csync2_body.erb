@@ -2,17 +2,17 @@
 	key <%= configpath %>/<%= group_key %>;
 	
 <% includes.sort.each do |incval| -%>
-include <%= incval %>;
+  include <%= incval %>;
 <% end -%>
 
 <% if excludes -%>
 <% excludes.sort.each do |excval| -%>
-exclude <%= excval %>;
+  exclude <%= excval %>;
 <% end -%>
 <% end -%>
 
 #Setting for automatic file dispute resolution
-auto <%= auto %>;
+  auto <%= auto %>;
 
 }
 
