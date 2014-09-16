@@ -6,16 +6,16 @@
 #Uses inotify to sync when necessary (On file modifications or additions)
 
 while true; do
-	inotifywait -qq \
+  inotifywait -qq \
 <% syncfolders.sort.each do |folders| -%>
-	-r <%= folders %> \
+  -r <%= folders %> \
 <% end -%>
-	-e modify -e attrib -e close_write -e move -e create -e delete 
+  -e modify -e attrib -e close_write -e move -e create -e delete 
 
-	#Sleep if necessary
-	sleep <%= sleeptimer %>
+  #Sleep if necessary
+  sleep <%= sleeptimer %>
 
-	#Run csync2
-	csync2 -x
+  #Run csync2
+  csync2 -x
 
 done
