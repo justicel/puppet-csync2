@@ -18,7 +18,7 @@ class csync2::inotify (
   }
 
   #Basic upstart init script for inotify
-  file { '/etc/upstart/csync2.conf':
+  file { '/etc/init/csync2.conf':
     ensure  => $ensure,
     source  => 'puppet:///modules/csync2/csync2.conf',
     require => File['/usr/local/bin/csync2-inotify'],
@@ -34,7 +34,7 @@ class csync2::inotify (
   service { 'csync2':
     ensure => $service_ensure,
     enable => $service_ensure,
-    require => File['/etc/upstart/csync2.conf'],
+    require => File['/etc/init/csync2.conf'],
   }
 
 
