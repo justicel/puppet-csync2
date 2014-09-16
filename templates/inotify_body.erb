@@ -10,7 +10,7 @@ while true; do
 <% syncfolders.sort.each do |folders| -%>
   -r <%= folders %> \
 <% end -%>
-  -e modify -e attrib -e close_write -e move -e create -e delete 
+  -e attrib -e close_write -e move -e delete 
 
   #Sleep if necessary
   sleep <%= sleeptimer %>
