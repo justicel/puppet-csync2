@@ -7,13 +7,13 @@
 
 while true; do
   inotifywait -qq \
-<% syncfolders.sort.each do |folders| -%>
+<% Array(@syncfolders).sort.each do |folders| -%>
   -r <%= folders %> \
 <% end -%>
   -e attrib -e close_write -e move -e delete 
 
   #Sleep if necessary
-  sleep <%= sleeptimer %>
+  sleep <%= @sleeptimer %>
 
   #Run csync2
   csync2 -x
