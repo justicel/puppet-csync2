@@ -29,7 +29,7 @@ inherits csync2::params
     socket_type  => 'stream',
     flags        => 'REUSE',
     protocol     => 'tcp',
-    service_type => 'csync2',
+    service_type => 'UNLISTED',
     require      => Concat[$::csync2::params::configfile],
   }
 
