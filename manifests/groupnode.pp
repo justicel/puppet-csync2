@@ -29,6 +29,6 @@ define csync2::groupnode (
   concat::fragment { "${group}_csync2_member_${name}":
     order   => "20-${group}-${name}",
     target  => $configfile,
-    content => "        host ${hostname_true}@${ipaddress};\n",
+    content => "  host ${hostname_true}@${ipaddress};\n",
   }
 }
