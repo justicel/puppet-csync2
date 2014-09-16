@@ -24,7 +24,7 @@
 #Base resource definition for a csync2 group.
 define csync2::group (
   $group_key  = "csync2.${name}.key",
-  $key_source = 'puppet://modules/csync2/keys/default.key',
+  $key_source = $::csync2::params::default_key,
   $includes   = $::csync2::params::default_includes,
   $excludes   = $::csync2::params::default_excludes,
   $configfile = $::csync2::params::configfile,

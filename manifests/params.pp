@@ -8,6 +8,7 @@ class csync2::params {
   $default_includes = ['/var/tmp']
   $default_excludes = undef
   $default_auto     = 'none'
+  $default_key      = 'puppet:///modules/csync2/keys/default.key'
 
   case $::osfamily {
     'RedHat': {
