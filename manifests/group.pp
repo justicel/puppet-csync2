@@ -25,7 +25,7 @@
 define csync2::group (
   $group_key  = "csync2.${name}.key",
   $key_source = 'puppet://modules/csync2/keys/default.key',
-  $includes   = [$::csync2::params::default_includes],
+  $includes   = $::csync2::params::default_includes,
   $excludes   = $::csync2::params::default_excludes,
   $configfile = $::csync2::params::configfile,
   $configpath = $::csync2::params::configpath,
@@ -53,7 +53,7 @@ define csync2::group (
 
   #Replaced cron-job with inotify script
   class { 'csync2::inotify':
-    syncfolders => any2array($includes),
+    syncfolders => $includes,
     sleeptimer  => $checkfreq,
   }
 

@@ -8,9 +8,7 @@
 while true; do
 	inotifywait -qq \
 <% syncfolders.sort.each do |folders| -%>
-<% folders.each do |incdir| -%>
-	-r <%= incdir %> \
-<% end -%>
+	-r <%= folders %> \
 <% end -%>
 	-e modify -e attrib -e close_write -e move -e create -e delete 
 

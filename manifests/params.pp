@@ -5,8 +5,8 @@ class csync2::params {
 
   #Some class defaults
   $checkfreq        = '5'
-  $default_includes = '/var/tmp'
-  $default_excludes = '.*'
+  $default_includes = ['/var/tmp']
+  $default_excludes = undef
   $default_auto     = 'none'
 
   case $::osfamily {
