@@ -20,7 +20,7 @@ define csync2::groupnode (
   #Set this node as a slave if defined
   $hostname_true = $slave ? {
     true    => "(${hostname})",
-    default => ${hostname},
+    default => $hostname,
   }
 
   #The concat library is used here
