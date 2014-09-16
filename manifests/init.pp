@@ -26,10 +26,8 @@ inherits csync2::params
     port         => '30865',
     server       => $::csync2::params::csync2_exec,
     server_args  => '-i',
-    socket_type  => 'stream',
     flags        => 'REUSE',
     protocol     => 'tcp',
-    service_type => 'UNLISTED',
     require      => Concat[$::csync2::params::configfile],
   }
 
