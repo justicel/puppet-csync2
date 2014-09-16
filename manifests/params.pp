@@ -1,16 +1,32 @@
-#Default csync2 params including port and protocols for firewalling
 #If additional OS versions are to be added eventually for support the config
 #path and file will have to be changed to something else.
 
 class csync2::params {
-  $port = 30865
-  $protocol = 'tcp'
 
-  $firewall = false
-  $firewall_tool = ''
-  $firewall_src = '0.0.0.0/0'
-  $firewall_dst = $::ipaddress
+  #Some class defaults
+  $checkfreq        = '5'
+  $default_includes = '/var/tmp'
+  $default_excludes = '.*'
+  $default_auto     = 'none'
 
-  $configpath   = '/etc/csync2'
-  $configfile   = '/etc/csync2/csync2.cfg'
+  case $::osfamily {
+    'RedHat': {
+      $configpath      = '/etc/csync2'
+      $configfile      = '/etc/csync2/csync2.cfg'
+      $csync2_exec     = '/usr/sbin/csync2'
+      $csync2_package  = 'csync2'
+      $inotify_package = 'inotify-tools'
+    }
+    'Debian': {
+      $configpath      = '/etc'
+      $configfile      = '/etc/csync2.cfg'
+      $csync2_exec     = '/usr/sbin/csync2'
+      $csync2_package  = 'csync2'
+      $inotify_package = 'inotify-tools'
+    }
+    default: {
+      fail("Class['csync2::params']: Unsupported OS: ${::osfamily}")
+    }
+  }
+
 }

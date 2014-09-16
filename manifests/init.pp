@@ -9,60 +9,41 @@
 #[firewall_dst] The incoming IP on the server/node to allow connections to.
 
 class csync2 (
-  $firewall      = $csync2::params::firewall,
-  $firewall_tool = $csync2::params::firewall_tool,
-  $firewall_src  = $csync2::params::firewall_src,
-  $firewall_dst  = $csync2::params::firewall_dst,
+  $ensure        = 'present',
+  $checkfreq     = $::csync2::params::checkfreq,
 )
 inherits csync2::params
 {
 
-  #Need concat to make this work
-  include concat::setup
-
   #Install the basic packages
-  package { ['csync2', 'inotify-tools']:
-    ensure => present,
-  }
+  ensure_packages( [$::csync2::params::csync2_package, $::csync2::params::inotify_package],
+    { ensure => $ensure }
+  )
 
   #Csync2 needs xinetd
-  service { 'xinetd':
-    ensure  => running,
-    enable  => true,
-    require => Concat[$configfile],
-  }
-
-  #Copy over the csync xinetd file to the node (enabling it)
-  file { '/etc/xinetd.d/csync2':
-    source => 'puppet:///modules/csync2/csync2.xinetd',
-    notify => Service['xinetd'],
+  xinetd::service { 'csync2':
+    ensure       => $ensure,
+    port         => '30865',
+    server       => $::csync2::params::csync2_exec,
+    server_args  => '-i',
+    socket_type  => 'stream',
+    flags        => 'REUSE',
+    protocol     => 'tcp',
+    service_type => 'csync2',
+    require      => Concat[$::csync2::params::configfile],
   }
 
   #Build a very basic concat csync2 file
-  concat { $configfile:
+  concat { $::csync2::params::configfile:
     owner   => '0',
     group   => '0',
     mode    => '0644',
-    require => Package['csync2'],
-    notify  => Service['xinetd'],
+    require => Package[$::csync2::params::csync2_package],
   }
   concat::fragment{ 'csync2-header':
-    target  => $configfile,
+    target  => $::csync2::params::configfile,
     order   => '01',
     content => "#This file managed by Puppet\nnossl * *;\n",
   }
-
-  #Setup basic firewall
-  firewall { "csync2_${csync2::protocol}_${csync2::port}":
-    source      => $csync2::firewall_src,
-    destination => $csync2::firewall_dst,
-    protocol    => $csync2::protocol,
-    port        => $csync2::port,
-    action      => 'allow',
-    direction   => 'input',
-    tool        => $csync2::firewall_tool,
-    enable      => $csync2::manage_firewall,
-  }
-
 
 }

@@ -1,8 +1,0 @@
-name    'jlondon-csync2'
-version '0.0.1'
-source 'UNKNOWN'
-author 'Justice London'
-license 'Apache License, Version 2.0'
-summary 'Csync2 implementation for puppet'
-description 'A basic csync2 implementation with inotify support for Puppet'
-project_page 'https://github.com/justicel/puppet-csync2'

@@ -3,37 +3,39 @@
 #waiting for inotify data.
 
 class csync2::inotify (
-$syncfolders = undef,
-$sleeptimer = '5',
+  $ensure      = $::csync2::ensure,
+  $syncfolders = [],
+  $sleeptimer  = $::csync2::checkfreq,
 ) {
 
   #The inotify script
   file { '/usr/local/bin/csync2-inotify':
-    ensure  => present,
+    ensure  => $ensure,
     mode    => '0654',
-    owner   => root,
-    group   => 0,
+    owner   => '0',
+    group   => '0',
     content => template('csync2/inotify_body.erb'),
   }
 
-  #The inotify cron
-  file { '/etc/rc.d/init.d/csync2-inotify':
-    ensure  => present,
-    mode    => '0654',
-    owner   => root,
-    group   => 0,
-    source  => 'puppet:///modules/csync2/csync2-inotify',
-    notify  => Service['csync2-inotify'],
+  #Basic upstart init script for inotify
+  file { '/etc/upstart/csync2.conf':
+    ensure  => $ensure,
+    source  => 'puppet://modules/csync2/csync2.conf'
+    require => File['/usr/local/bin/csync2-inotify'],
   }
 
-  #Define and start the inotify for csync service
-  service { 'csync2-inotify':
-    ensure  => running,
-    enable  => true,
-    require => [
-                File['/etc/rc.d/init.d/csync2-inotify'],
-                File['/usr/local/bin/csync2-inotify'],
-               ],
+  #Selector for turning 'present' to true
+  $service_ensure = $ensure ? {
+    'present' => true,
+    default   => false,
   }
+
+  #Start the csync2 service
+  service { 'csync2':
+    ensure => $service_ensure,
+    enable => $service_ensure,
+    require => File['/etc/upstart/csync2.conf'],
+  }
+
 
 }

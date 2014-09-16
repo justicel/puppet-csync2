@@ -24,20 +24,20 @@
 #Base resource definition for a csync2 group.
 define csync2::group (
   $group_key  = "csync2.${name}.key",
-  $includes   = '/var/tmp',
-  $excludes   = '.*',
-  $order      = '10',
-  $configfile = $csync2::params::configfile,
-  $configpath = $csync2::params::configpath,
-  $auto       = 'none',
-  $cron       = 'false',
-  $cronfreq   = '5',
+  $key_source = 'puppet://modules/csync2/keys/default.key',
+  $includes   = [$::csync2::params::default_includes],
+  $excludes   = $::csync2::params::default_excludes,
+  $configfile = $::csync2::params::configfile,
+  $configpath = $::csync2::params::configpath,
+  $auto       = $::csync2::params::default_auto,
+  $checkfreq  = $::csync2::checkfreq,
 ) {
+  include ::csync2::params
 
   #Copy the key to the host
   file { "${configpath}/${group_key}":
     ensure  => present,
-    source  => "puppet:///modules/csync2/keys/${group_key}",
+    source  => $key_source,
     replace => true,
     group   => '0',
     owner   => '0',
@@ -46,23 +46,15 @@ define csync2::group (
 
   #Define the csync2 group
   concat::fragment { "${name}_csync2_header":
-    order   => $order,
+    order   => "10-${name}",
     target  => $configfile,
     content => "group ${name}\n{\n\n",
   }
 
-  ##Set the cron in minutes or ignore if not set
-  if $cron == 'true' {
-#    cron { 'csync2':
-#      command => "/usr/sbin/csync2 -x",
-#      user    => 'root',
-#      minute  => "*/$cronfreq",
-#    }
-    #Replaced cron-job with inotify script
-    class { 'csync2::inotify':
-      syncfolders => $includes,
-      sleeptimer  => $cronfreq,
-    }
+  #Replaced cron-job with inotify script
+  class { 'csync2::inotify':
+    syncfolders => any2array($includes),
+    sleeptimer  => $checkfreq,
   }
 
   #Bring in the cluster members
@@ -70,7 +62,7 @@ define csync2::group (
 
   #The main csync2 config body as defined by template and concat.
   concat::fragment { "${name}_csync2_body":
-    order   => $order + 2,
+    order   => "255-${name}",
     target  => $configfile,
     content => template('csync2/csync2_body.erb'),
   }
