@@ -33,6 +33,7 @@ inherits csync2::params
     group   => '0',
     mode    => '0644',
     require => Package[$::csync2::params::csync2_package],
+    notify  => Exec['csync2_checksync'],
   }
   concat::fragment{ 'csync2-header':
     target  => $::csync2::params::configfile,

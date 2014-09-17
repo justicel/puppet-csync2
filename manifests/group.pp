@@ -66,11 +66,19 @@ define csync2::group (
   }
 
   #Once we have created the concatinated csync2 configuration file, do an initial sync
-  exec { "${::csync2::params::csync2_exec} -x":
-    creates => "/var/lib/csync2/${::hostname}.db",
-    path    => ['/sbin','/bin','/usr/bin','/usr/sbin'],
-    timeout => 3600,
-    require => Concat[$::csync2::params::configfile],
+  exec { 'csync2_checksync': 
+    command     => "${::csync2::params::csync2_exec} -TUI",
+    path        => ['/sbin','/bin','/usr/bin','/usr/sbin'],
+    timeout     => 300,
+    refreshonly => true,
+    require     => Concat[$::csync2::params::configfile],
+    notify      => Exec['csync2_sync_nodes'],
+  }
+  exec { 'csync2_sync_nodes':
+    command     => "${::csync2::params::csync2_exec} -u"
+    path        => ['/sbin','/bin','/usr/bin','/usr/sbin'],
+    timeout     => 3600,
+    refreshonly => true,
   }
 
 }
