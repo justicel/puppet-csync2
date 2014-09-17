@@ -3,12 +3,12 @@
 #Options:
 #[group_key] This defines the name of the group-key to utilize for the defined
 #group. By default it will be based off of the NAME of the defined resource.
+#[key_source] Defines the location (local or from puppet-server) of the key
+#to use for syncing this particular group
 #[includes] The list of folders, or single folders to use with a sync group.
 #Defaults to a test path.
 #[excludes] A default list of files or folders to EXCLUDE from syncing. This
 #defaults to everything so make sure to modify this option!
-#[order] The default order of the resource group. Defaults to 10, but if you
-#realize multiple groups you will need to redefine this.
 #[configfile] The default config-file to use for csync2. You probably
 #shouldn't modify.
 #[configpath] The default config-path to use for csync2.
@@ -16,9 +16,7 @@
 #can choose from:
 #none, first, younger, older, bigger, smaller, left, right. Probably younger or
 #none is what you want.
-#[cron] Should we run the sync group task automatically? By default, no. Use
-#false, or true to enable.
-#[cronfreq] The amount of sleep timing to wait after a file modification has
+#[checkfreq] The amount of sleep timing to wait after a file modification has
 #been detected. Default to 5s.
 
 #Base resource definition for a csync2 group.
@@ -65,6 +63,13 @@ define csync2::group (
     order   => "255-${name}",
     target  => $configfile,
     content => template('csync2/csync2_body.erb'),
+  }
+
+  #Once we have created the concatinated csync2 configuration file, do an initial sync
+  exec { "${::csync2::params::csync2_exec} -xI":
+    creates => "/var/lib/csync2/${::hostname}.db",
+    path    => ['/sbin','/bin','/usr/bin','/usr/sbin'],
+    timeout => 3600,
   }
 
 }

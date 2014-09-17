@@ -1,13 +1,9 @@
-#The base csync2 resource initialization. We can define some basic things such
-#as if we should enable the firewall and what tools to use if so.
+#The base csync2 resource initialization.
 #Options:
-#[firewall] This uses example42's firewall module by default. Others could be
-#written. Probably want to use 'enable' here.
-#[firewall_tool] The firewall type to utilize. By default is iptables
-#[firewall_src] The source address for incoming connections. Likely will be
-#your local net
-#[firewall_dst] The incoming IP on the server/node to allow connections to.
-
+#[ensure] Set to (absent/present). Defaults to present for the csync2 resources
+#
+#[checkfreq] The default check frequency for all groups on the csync2 hosts
+#
 class csync2 (
   $ensure        = 'present',
   $checkfreq     = $::csync2::params::checkfreq,
