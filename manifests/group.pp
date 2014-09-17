@@ -70,6 +70,7 @@ define csync2::group (
     creates => "/var/lib/csync2/${::hostname}.db",
     path    => ['/sbin','/bin','/usr/bin','/usr/sbin'],
     timeout => 3600,
+    require => Concat[$::csync2::params::configfile],
   }
 
 }
