@@ -66,7 +66,7 @@ define csync2::group (
   }
 
   #Once we have created the concatinated csync2 configuration file, do an initial sync
-  exec { "${::csync2::params::csync2_exec} -x":
+  exec { "${::csync2::params::csync2_exec} -TIU":
     creates => "/var/lib/csync2/${::hostname}.db",
     path    => ['/sbin','/bin','/usr/bin','/usr/sbin'],
     timeout => 3600,
