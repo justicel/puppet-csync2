@@ -75,7 +75,7 @@ define csync2::group (
     notify      => Exec['csync2_sync_nodes'],
   }
   exec { 'csync2_sync_nodes':
-    command     => "${::csync2::params::csync2_exec} -u"
+    command     => "${::csync2::params::csync2_exec} -u",
     path        => ['/sbin','/bin','/usr/bin','/usr/sbin'],
     timeout     => 3600,
     refreshonly => true,
