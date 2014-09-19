@@ -32,8 +32,8 @@ class csync2::inotify (
 
   #Start the csync2 service
   service { 'csync2':
-    ensure => $service_ensure,
-    enable => $service_ensure,
+    ensure  => $service_ensure,
+    enable  => $service_ensure,
     require => File['/etc/init/csync2.conf'],
   }
 

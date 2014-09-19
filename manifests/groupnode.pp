@@ -15,7 +15,7 @@ define csync2::groupnode (
   $group      = 'default',
   $hostname   = $::hostname,
   $ipaddress  = $::ipaddress,
-  $configfile = $::csync2::params::configfile,
+  $configfile = $::csync2::csync2_config,
   $slave      = false,
 ) {
   include ::csync2::params

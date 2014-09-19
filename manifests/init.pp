@@ -5,14 +5,18 @@
 #[checkfreq] The default check frequency for all groups on the csync2 hosts
 #
 class csync2 (
-  $ensure        = 'present',
-  $checkfreq     = $::csync2::params::checkfreq,
-)
-inherits csync2::params
-{
+  $ensure          = 'present',
+  $checkfreq       = $::csync2::params::checkfreq,
+  $csync2_package  = $::csync2::params::csync2_package,
+  $inotify_package = $::csync2::params::inotify_package,
+  $csync2_exec     = $::csync2::params::csync2_exec,
+  $csync2_config   = $::csync2::params::configfile,
+
+) {
+  include ::csync2::params
 
   #Install the basic packages
-  ensure_packages( [$::csync2::params::csync2_package, $::csync2::params::inotify_package],
+  ensure_packages( [$csync2_package, $inotify_package],
     { ensure => $ensure }
   )
 
@@ -20,23 +24,23 @@ inherits csync2::params
   xinetd::service { 'csync2':
     ensure       => $ensure,
     port         => '30865',
-    server       => $::csync2::params::csync2_exec,
+    server       => $csync2_exec,
     server_args  => '-i',
     flags        => 'REUSE',
     protocol     => 'tcp',
-    require      => Concat[$::csync2::params::configfile],
+    require      => Concat[$csync2_config],
   }
 
   #Build a very basic concat csync2 file
-  concat { $::csync2::params::configfile:
+  concat { $csync2_config:
     owner   => '0',
     group   => '0',
     mode    => '0644',
-    require => Package[$::csync2::params::csync2_package],
+    require => Package[$csync2_package],
     notify  => Exec['csync2_checksync'],
   }
   concat::fragment{ 'csync2-header':
-    target  => $::csync2::params::configfile,
+    target  => $csync2_config,
     order   => '01',
     content => "#This file managed by Puppet\nnossl * *;\n",
   }

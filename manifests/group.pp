@@ -21,14 +21,15 @@
 
 #Base resource definition for a csync2 group.
 define csync2::group (
-  $group_key  = "csync2.${name}.key",
-  $key_source = $::csync2::params::default_key,
-  $includes   = $::csync2::params::default_includes,
-  $excludes   = $::csync2::params::default_excludes,
-  $configfile = $::csync2::params::configfile,
-  $configpath = $::csync2::params::configpath,
-  $auto       = $::csync2::params::default_auto,
-  $checkfreq  = $::csync2::checkfreq,
+  $group_key   = "csync2.${name}.key",
+  $key_source  = $::csync2::params::default_key,
+  $includes    = $::csync2::params::default_includes,
+  $excludes    = $::csync2::params::default_excludes,
+  $configfile  = $::csync2::csync2_config,
+  $configpath  = $::csync2::params::configpath,
+  $auto        = $::csync2::params::default_auto,
+  $checkfreq   = $::csync2::checkfreq,
+  $csync2_exec = $::csync2::csync2_exec,
 ) {
   include ::csync2::params
 
@@ -66,17 +67,17 @@ define csync2::group (
   }
 
   #Once we have created the concatinated csync2 configuration file, do an initial sync
-  exec { 'csync2_checksync': 
-    command     => "${::csync2::params::csync2_exec} -TUI",
+  exec { 'csync2_checksync':
+    command     => "${csync2_exec} -TUI",
     path        => ['/sbin','/bin','/usr/bin','/usr/sbin'],
     timeout     => 300,
     refreshonly => true,
     returns     => ['0','2'],
-    require     => Concat[$::csync2::params::configfile],
+    require     => Concat[$configfile],
     notify      => Exec['csync2_sync_nodes'],
   }
   exec { 'csync2_sync_nodes':
-    command     => "${::csync2::params::csync2_exec} -u",
+    command     => "${csync2_exec} -u",
     path        => ['/sbin','/bin','/usr/bin','/usr/sbin'],
     timeout     => 3600,
     refreshonly => true,
