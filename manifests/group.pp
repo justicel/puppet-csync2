@@ -21,15 +21,16 @@
 
 #Base resource definition for a csync2 group.
 define csync2::group (
-  $group_key   = "csync2.${name}.key",
-  $key_source  = $::csync2::params::default_key,
-  $includes    = $::csync2::params::default_includes,
-  $excludes    = $::csync2::params::default_excludes,
-  $configfile  = $::csync2::csync2_config,
-  $configpath  = $::csync2::params::configpath,
-  $auto        = $::csync2::params::default_auto,
-  $checkfreq   = $::csync2::checkfreq,
-  $csync2_exec = $::csync2::csync2_exec,
+  $group_key      = "csync2.${name}.key",
+  $key_source     = $::csync2::params::default_key,
+  $includes       = $::csync2::params::default_includes,
+  $excludes       = $::csync2::params::default_excludes,
+  $configfile     = $::csync2::csync2_config,
+  $configpath     = $::csync2::params::configpath,
+  $auto           = $::csync2::params::default_auto,
+  $checkfreq      = $::csync2::checkfreq,
+  $csync2_exec    = $::csync2::csync2_exec,
+  $csync2_package = $::csync2::csync2_package,
 ) {
   include ::csync2
   include ::csync2::params
