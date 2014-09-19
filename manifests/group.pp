@@ -31,7 +31,6 @@ define csync2::group (
   $checkfreq   = $::csync2::checkfreq,
   $csync2_exec = $::csync2::csync2_exec,
 ) {
-  include ::csync2
   include ::csync2::params
 
   #Copy the key to the host
@@ -42,6 +41,20 @@ define csync2::group (
     group   => '0',
     owner   => '0',
     mode    => '0600',
+  }
+
+  #Build a very basic concat csync2 file
+  concat { $configfile:
+    owner   => '0',
+    group   => '0',
+    mode    => '0644',
+    require => Package[$csync2_package],
+    notify  => Exec['csync2_checksync'],
+  }
+  concat::fragment{ 'csync2-header':
+    target  => $configfile,
+    order   => '01',
+    content => "#This file managed by Puppet\nnossl * *;\n",
   }
 
   #Define the csync2 group

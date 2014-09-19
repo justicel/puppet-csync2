@@ -11,7 +11,6 @@ class csync2 (
   $inotify_package = $::csync2::params::inotify_package,
   $csync2_exec     = $::csync2::params::csync2_exec,
   $csync2_config   = $::csync2::params::configfile,
-
 ) {
   include ::csync2::params
 
@@ -22,27 +21,12 @@ class csync2 (
 
   #Csync2 needs xinetd
   xinetd::service { 'csync2':
-    ensure       => $ensure,
-    port         => '30865',
-    server       => $csync2_exec,
-    server_args  => '-i',
-    flags        => 'REUSE',
-    protocol     => 'tcp',
-    require      => Concat[$csync2_config],
-  }
-
-  #Build a very basic concat csync2 file
-  concat { $csync2_config:
-    owner   => '0',
-    group   => '0',
-    mode    => '0644',
-    require => Package[$csync2_package],
-    notify  => Exec['csync2_checksync'],
-  }
-  concat::fragment{ 'csync2-header':
-    target  => $csync2_config,
-    order   => '01',
-    content => "#This file managed by Puppet\nnossl * *;\n",
+    ensure      => $ensure,
+    port        => '30865',
+    server      => $csync2_exec,
+    server_args => '-i',
+    flags       => 'REUSE',
+    protocol    => 'tcp',
   }
 
 }
