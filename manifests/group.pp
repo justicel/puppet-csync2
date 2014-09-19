@@ -31,6 +31,7 @@ define csync2::group (
   $checkfreq   = $::csync2::checkfreq,
   $csync2_exec = $::csync2::csync2_exec,
 ) {
+  include ::csync2
   include ::csync2::params
 
   #Copy the key to the host

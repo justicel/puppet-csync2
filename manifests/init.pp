@@ -11,8 +11,7 @@ class csync2 (
   $inotify_package = $::csync2::params::inotify_package,
   $csync2_exec     = $::csync2::params::csync2_exec,
   $csync2_config   = $::csync2::params::configfile,
-) {
-  include ::csync2::params
+) inherits ::csync2::params {
 
   #Install the basic packages
   ensure_packages( [$csync2_package, $inotify_package],

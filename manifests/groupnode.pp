@@ -19,7 +19,6 @@ define csync2::groupnode (
   $slave      = false,
 ) {
   include ::csync2
-  include ::csync2::params
 
   #Set this node as a slave if defined
   $hostname_true = $slave ? {
