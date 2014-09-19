@@ -7,6 +7,7 @@ class csync2::inotify (
   $syncfolders = [],
   $sleeptimer  = $::csync2::checkfreq,
 ) {
+  include ::csync2
 
   #The inotify script
   file { '/usr/local/bin/csync2-inotify':

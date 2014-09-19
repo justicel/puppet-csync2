@@ -18,6 +18,7 @@ define csync2::groupnode (
   $configfile = $::csync2::csync2_config,
   $slave      = false,
 ) {
+  include ::csync2
   include ::csync2::params
 
   #Set this node as a slave if defined
