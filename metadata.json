@@ -1,6 +1,6 @@
 {
   "name": "jlondon-csync2",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Justice London",
   "summary": "Csync2 implementation for puppet",
   "license": "Apache License, Version 2.0",

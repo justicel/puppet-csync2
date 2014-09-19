@@ -9,6 +9,11 @@ class csync2::inotify (
 ) {
   include ::csync2
 
+  #Validate variables
+  validate_re($ensure, '^present$|^absent$')
+  validate_array($syncfolders)
+  validate_string($sleeptime)
+
   #The inotify script
   file { '/usr/local/bin/csync2-inotify':
     ensure  => $ensure,

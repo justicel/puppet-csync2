@@ -20,6 +20,13 @@ define csync2::groupnode (
 ) {
   include ::csync2
 
+  #Variable validators
+  validate_string($group)
+  validate_string($hostname)
+  validate_string($ipaddress)
+  validate_absolute_path($configfile)
+  validate_bool($slave)
+
   #Set this node as a slave if defined
   $hostname_true = $slave ? {
     true    => "(${hostname})",

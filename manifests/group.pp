@@ -35,6 +35,17 @@ define csync2::group (
   include ::csync2
   include ::csync2::params
 
+  #Variable validators
+  validate_string($group_key)
+  validate_string($key_source)
+  validate_array($includes)
+  validate_absolute_path($configfile)
+  validate_absolute_path($configpath)
+  validate_string($auto)
+  validate_string($checkfreq)
+  validate_absolute_path($csync2_exec)
+  validate_string($csync2_package)
+
   #Copy the key to the host
   file { "${configpath}/${group_key}":
     ensure  => present,

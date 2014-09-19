@@ -13,6 +13,13 @@ class csync2 (
   $csync2_config   = $::csync2::params::configfile,
 ) inherits ::csync2::params {
 
+  #Validate variables
+  validate_re($ensure, '^present$|^absent$')
+  validate_string($csync2_package)
+  validate_string($inotify_package)
+  validate_absolute_path($csync2_exec)
+  validate_absolute_path($csync2_config)
+
   #Install the basic packages
   ensure_packages( [$csync2_package, $inotify_package],
     { ensure => $ensure }
