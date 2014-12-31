@@ -1,5 +1,5 @@
-Puppet Csync2   0.1.0
-=====================
+Puppet Csync2 
+=============
 
 Here is what it can do, followed by an example configuration.
 You can use csync2 much like other tools (Unison, rsync, etc.), but what is nice about Csync2 is it is
