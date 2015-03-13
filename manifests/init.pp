@@ -28,6 +28,8 @@ class csync2 (
   #Csync2 needs xinetd
   xinetd::service { 'csync2':
     ensure      => $ensure,
+    user        => 'root',
+    group       => 'root',
     port        => '30865',
     server      => $csync2_exec,
     server_args => '-i',
