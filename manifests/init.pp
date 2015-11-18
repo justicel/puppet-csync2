@@ -1,9 +1,29 @@
-#The base csync2 resource initialization.
-#Options:
-#[ensure] Set to (absent/present). Defaults to present for the csync2 resources
+# Installs and manages Csync2 with iNotify support
 #
-#[checkfreq] The default check frequency for all groups on the csync2 hosts
+# Options:
+# [ensure] Set to (absent/present). Defaults to present for the csync2 resources
 #
+# [checkfreq] The default check frequency for all groups on the csync2 hosts
+#
+# First you will need to define a csync2 GROUP key using csync2 on the command line:
+#
+# csync2 -k csync2.example.key
+#
+# Deploy that key with puppet and configure the csync2 class:
+#
+# class {'csync2': }
+#
+# csync2::groupnode { $::fqdn:
+#   group      => 'default', }
+#
+# csync2::group { 'default':
+#   includes   => ['/tmp/example/path1', '/tmp/example/path2'],
+#   excludes   => ['*.svn'],
+#   auto       => 'younger',
+#   group_key  => 'example',
+#   key_source => 'puppet:///modules/csync2/keys/csync2.example.key',
+# }
+
 class csync2 (
   $ensure          = 'present',
   $checkfreq       = $::csync2::params::checkfreq,

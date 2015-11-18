@@ -1,7 +1,8 @@
-#Internal inotify class description. There isn't really much to edit here.
+#Internal inotify class description.
+#
 #This defines a simple script which launches into the background on the node
 #waiting for inotify data.
-#
+
 class csync2::inotify (
   $ensure      = $::csync2::ensure,
   $syncfolders = [],
