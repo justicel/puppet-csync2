@@ -1,30 +1,37 @@
 Puppet Csync2 
 =============
 
-Here is what it can do, followed by an example configuration.
-You can use csync2 much like other tools (Unison, rsync, etc.), but what is nice about Csync2 is it is
-very fast and maintains a sqlite database of all file changes.
-This means it is capable of managing several hundred thousand files to be synced between multiple systems
-with very little lag between results (essentially a few seconds most of the time). Unlike rsync you can do
-multi-write style replication which is a requirement if you have several web-servers all being written to.
+Puppet module for managing csync2.
+For general csync2 information and documentation, please refer to: http://oss.linbit.com/csync2/
 
 This module utilizes a resource collector on each defined node to build a sync configuration.
 
-Example usage below, all configs go into your node configuration:
+## Example usage
 
-    class {'csync2': }
+First you will need to define a csync2 GROUP key using csync2 on the command line:
 
-    @@csync2::groupnode { $::fqdn:
-      group       => 'default', }
+```bash
+csync2 -k csync2.example.key
+```
 
-    csync2::group { 'default':
-      includes => ["path1", "path2"],
-      excludes => ['*.svn'],
-      auto     => 'younger',
-    }
+Deploy that key with puppet and configure the csync2 class:
 
-Additionally, you will need to define a csync2 GROUP key. To do this you will need to have a csync2
-installation somewhere. You will then use 'csync2 -k <keyfile>' to write the key. Define this key on your puppet 
-master or as a local file and define it in the key_source variable in the csync2::group.
+```puppet
+class {'csync2': }
 
-For more general csync2 documentation, please refer to: http://oss.linbit.com/csync2/
+csync2::groupnode { $::fqdn:
+  group      => 'default', }
+
+csync2::group { 'default':
+  includes   => ['/tmp/example/path1', '/tmp/example/path2'],
+  excludes   => ['*.svn'],
+  auto       => 'younger',
+  group_key  => 'example',
+  key_source => 'puppet:///modules/csync2/keys/csync2.example.key',
+}
+```
+
+## Requirements
+
+- [puppetlabs-concat](https://github.com/puppetlabs/puppetlabs-concat)
+

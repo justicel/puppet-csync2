@@ -1,6 +1,5 @@
-#If additional OS versions are to be added eventually for support the config
-#path and file will have to be changed to something else.
-#
+# Sets default parameters
+
 class csync2::params {
 
   #Some class defaults
