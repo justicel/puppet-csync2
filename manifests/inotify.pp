@@ -25,10 +25,11 @@ class csync2::inotify (
   }
 
   #Basic upstart init script for inotify
-  file { '/etc/init/csync2.conf':
+  file { '/etc/systemd/system/csync2-inotify.service':
     ensure  => $ensure,
-    source  => 'puppet:///modules/csync2/csync2.conf',
+    source  => 'puppet:///modules/csync2/csync2-inotify.service',
     require => File['/usr/local/bin/csync2-inotify'],
+    notify  => Exec['reload-systemd'],
   }
 
   #Selector for turning 'present' to true
@@ -37,11 +38,16 @@ class csync2::inotify (
     default   => false,
   }
 
+  exec { 'reload-systemd':
+    command      => '/usr/bin/systemctl daemon-reload',
+    refreshonly => true,
+  }
+
   #Start the csync2 service
-  service { 'csync2':
+  service { 'csync2-inotify':
     ensure  => $service_ensure,
     enable  => $service_ensure,
-    require => File['/etc/init/csync2.conf'],
+    require => File['/etc/systemd/system/csync2-inotify.service'],
   }
 
 

@@ -45,6 +45,10 @@ class csync2 (
     { ensure => $ensure }
   )
 
+  file { '/etc/csync2':
+    ensure => directory,
+  }
+
   #Csync2 needs xinetd
   xinetd::service { 'csync2':
     ensure      => $ensure,
@@ -55,6 +59,7 @@ class csync2 (
     server_args => '-i',
     flags       => 'REUSE',
     protocol    => 'tcp',
+    require     => File['/etc/csync2'],
   }
 
 }
