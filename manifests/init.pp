@@ -11,6 +11,7 @@ class csync2 (
   $inotify_package = $::csync2::params::inotify_package,
   $csync2_exec     = $::csync2::params::csync2_exec,
   $csync2_config   = $::csync2::params::configfile,
+  $xinetd_group    = $::csync2::params::xinetd_group,
 ) inherits ::csync2::params {
 
   #Validate variables
@@ -29,7 +30,7 @@ class csync2 (
   xinetd::service { 'csync2':
     ensure      => $ensure,
     user        => 'root',
-    group       => 'root',
+    group       => "$xinetd_group",
     port        => '30865',
     server      => $csync2_exec,
     server_args => '-i',
