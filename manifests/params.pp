@@ -17,6 +17,7 @@ class csync2::params {
       $csync2_exec     = '/usr/sbin/csync2'
       $csync2_package  = 'csync2'
       $inotify_package = 'inotify-tools'
+      $xinetd_group    = 'root'
     }
     'Debian': {
       $configpath      = '/etc'
@@ -24,6 +25,15 @@ class csync2::params {
       $csync2_exec     = '/usr/sbin/csync2'
       $csync2_package  = 'csync2'
       $inotify_package = 'inotify-tools'
+      $xinetd_group    = 'root'
+    }
+    'FreeBSD': {
+      $configpath      = '/usr/local/etc'
+      $configfile      = '/usr/local/etc/csync2.cfg'
+      $csync2_exec     = '/usr/local/sbin/csync2'
+      $csync2_package  = 'net/csync2'
+      $inotify_package = 'sysutils/inotify-tools'
+      $xinetd_group    = 'wheel'
     }
     default: {
       fail("Class['csync2::params']: Unsupported OS: ${::osfamily}")

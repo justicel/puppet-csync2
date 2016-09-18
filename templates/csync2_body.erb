@@ -1,11 +1,11 @@
 
   key <%= @configpath %>/<%= @group_key %>;
-	
+
 <% Array(@includes).sort.each do |incval| -%>
   include <%= incval %>;
 <% end -%>
 
-<% if excludes -%>
+<% if @excludes -%>
 <% Array(@excludes).sort.each do |excval| -%>
   exclude <%= excval %>;
 <% end -%>
