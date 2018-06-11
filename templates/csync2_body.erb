@@ -5,7 +5,7 @@
   include <%= incval %>;
 <% end -%>
 
-<% if excludes -%>
+<% if @excludes -%>
 <% Array(@excludes).sort.each do |excval| -%>
   exclude <%= excval %>;
 <% end -%>
@@ -13,6 +13,12 @@
 
   #Setting for automatic file dispute resolution
   auto <%= @auto %>;
+
+<% if @action -%>
+  action {
+    <%= @action -%>
+  }
+<% end -%>
 
 }
 

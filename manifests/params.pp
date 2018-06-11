@@ -8,15 +8,23 @@ class csync2::params {
   $default_includes = ['/var/tmp']
   $default_excludes = undef
   $default_auto     = 'none'
+  $default_action   = undef
   $default_key      = 'puppet:///modules/csync2/keys/default.key'
 
   case $::osfamily {
     'RedHat': {
-      $configpath      = '/etc/csync2'
-      $configfile      = '/etc/csync2/csync2.cfg'
+      if $facts['operatingsystemrelease'] > "6" {
+        $configfile      = '/usr/local/etc/csync2.cfg'
+      }else {
+        $configfile      = '/etc/csync2/csync2.cfg'
+
+      }
+
       $csync2_exec     = '/usr/sbin/csync2'
       $csync2_package  = 'csync2'
       $inotify_package = 'inotify-tools'
+      $configpath      = '/etc/csync2'
+
     }
     'Debian': {
       $configpath      = '/etc'

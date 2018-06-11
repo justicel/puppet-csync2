@@ -28,6 +28,7 @@ define csync2::group (
   $configfile     = $::csync2::csync2_config,
   $configpath     = $::csync2::params::configpath,
   $auto           = $::csync2::params::default_auto,
+  $action         = $::csync2::params::default_action,
   $checkfreq      = $::csync2::checkfreq,
   $csync2_exec    = $::csync2::csync2_exec,
   $csync2_package = $::csync2::csync2_package,
@@ -57,11 +58,16 @@ define csync2::group (
   }
 
   #Build a very basic concat csync2 file
+  if $facts['osfamily'] == "RedHat" and $facts['operatingsystemrelease'] > "6" {
+    $concat_require = 'Exec[Build and install csync2 on RHEL]'
+  } else {
+    $concat_require = "Package[$csync2_package]"
+  }
   concat { $configfile:
     owner   => '0',
     group   => '0',
     mode    => '0644',
-    require => Package[$csync2_package],
+    require => $concat_require,
     notify  => Exec['csync2_checksync'],
   }
   concat::fragment{ 'csync2-header':
@@ -93,7 +99,7 @@ define csync2::group (
     content => template('csync2/csync2_body.erb'),
   }
 
-  #Once we have created the concatinated csync2 configuration file, do an initial sync
+  ##Once we have created the concatinated csync2 configuration file, do an initial sync
   exec { 'csync2_checksync':
     command     => "${csync2_exec} -TUI",
     path        => ['/sbin','/bin','/usr/bin','/usr/sbin'],
@@ -108,6 +114,7 @@ define csync2::group (
     path        => ['/sbin','/bin','/usr/bin','/usr/sbin'],
     timeout     => 3600,
     refreshonly => true,
+    returns     => ['0', '1', '2'],
   }
 
 }
