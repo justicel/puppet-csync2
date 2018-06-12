@@ -105,7 +105,7 @@ define csync2::group (
     path        => ['/sbin','/bin','/usr/bin','/usr/sbin'],
     timeout     => 300,
     refreshonly => true,
-    returns     => ['0','2'],
+    returns     => ['0', '1', '2'],
     require     => Concat[$configfile],
     notify      => Exec['csync2_sync_nodes'],
   }
