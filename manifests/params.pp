@@ -14,7 +14,9 @@ class csync2::params {
   case $::osfamily {
     'RedHat': {
       if $facts['operatingsystemrelease'] > "6" {
-        $configfile      = '/usr/local/etc/csync2.cfg'
+        $csync2_source_url    = 'http://oss.linbit.com/csync2/csync2-2.0.tar.gz'
+        $csync2_rhel_version  = '2.0'
+        $configfile           = '/usr/local/etc/csync2.cfg'
       }else {
         $configfile      = '/etc/csync2/csync2.cfg'
 

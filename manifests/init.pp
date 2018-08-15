@@ -6,13 +6,14 @@
 #
 class csync2 (
   $ensure              = 'present',
-  $csync2_rhel_version = '2.0',
   $enable_inotify      = true,
   $checkfreq           = $::csync2::params::checkfreq,
   $csync2_package      = $::csync2::params::csync2_package,
   $inotify_package     = $::csync2::params::inotify_package,
   $csync2_exec         = $::csync2::params::csync2_exec,
   $csync2_config       = $::csync2::params::configfile,
+  $csync2_rhel_version = $::csync2::params::csync2_rhel_version,
+  $csync2_source_url   = $::csync2::params::csync2_source_url,
 ) inherits ::csync2::params {
 
   #Validate variables
@@ -34,7 +35,7 @@ class csync2 (
       ensure        => present,
       extract       => true,
       extract_path  => '/usr/local/src',
-      source        => "http://oss.linbit.com/csync2/csync2-$csync2_rhel_version.tar.gz",
+      source        => "$csync2_source_url",
       creates       => "/usr/local/src/csync2-$csync2_rhel_version",
       cleanup       => false,
     }->
