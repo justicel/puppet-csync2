@@ -1,25 +1,32 @@
-#Resource definition for a csync2 GROUP. This is the core resource realized on
-#each node in the csync2 cluster.
-#Options:
-#[group_key] This defines the name of the group-key to utilize for the defined
-#group. By default it will be based off of the NAME of the defined resource.
-#[key_source] Defines the location (local or from puppet-server) of the key
-#to use for syncing this particular group
-#[includes] The list of folders, or single folders to use with a sync group.
-#Defaults to a test path.
-#[excludes] A default list of files or folders to EXCLUDE from syncing. This
-#defaults to everything so make sure to modify this option!
-#[configfile] The default config-file to use for csync2. You probably
-#shouldn't modify.
-#[configpath] The default config-path to use for csync2.
-#[auto] The logic to use for syncing of conflicts. This defaults to none. You
-#can choose from:
-#none, first, younger, older, bigger, smaller, left, right. Probably younger or
-#none is what you want.
-#[checkfreq] The amount of sleep timing to wait after a file modification has
-#been detected. Default to 5s.
+# Resource definition for a csync2 GROUP.
+# This is the core resource to be applied on each cluster node
 
-#Base resource definition for a csync2 group.
+# Options:
+# [group_key] This defines the name of the group-key to utilize for the defined
+# group. By default it will be based off of the NAME of the defined resource.
+#
+# [key_source] Defines the location (local or from puppet-server) of the key
+# to use for syncing this particular group
+#
+# [includes] The list of folders, or single folders to use with a sync group.
+# Defaults to a test path.
+#
+# [excludes] A default list of files or folders to EXCLUDE from syncing. This
+# defaults to everything so make sure to modify this option!
+#
+# [configfile] The default config-file to use for csync2. You probably
+# shouldn't modify.
+#
+# [configpath] The default config-path to use for csync2.
+#
+# [auto] The logic to use for syncing of conflicts. This defaults to none.
+# Options:
+# none, first, younger, older, bigger, smaller, left, right. Probably younger or
+# none is what you want.
+#
+# [checkfreq] The amount of sleep timing to wait after a file modification has
+# been detected. Default to 5s.
+
 define csync2::group (
   $group_key      = "csync2.${name}.key",
   $key_source     = $::csync2::params::default_key,
@@ -46,7 +53,8 @@ define csync2::group (
   validate_absolute_path($csync2_exec)
   validate_string($csync2_package)
 
-  #Copy the key to the host
+  # Copy the key to the host
+  # Can be generated on a host by running csync2 -k csync2.example.key
   file { "${configpath}/${group_key}":
     ensure  => present,
     source  => $key_source,
