@@ -24,11 +24,32 @@ class csync2::inotify (
     content => template('csync2/inotify_body.erb'),
   }
 
-  #Basic upstart init script for inotify
-  file { '/etc/init/csync2.conf':
-    ensure  => $ensure,
-    source  => 'puppet:///modules/csync2/csync2.conf',
-    require => File['/usr/local/bin/csync2-inotify'],
+  case $service_provider {
+
+  'upstart': {
+      #Basic upstart init script for inotify
+      file { 'csync2-service':
+        ensure  => $ensure,
+        source  => 'puppet:///modules/csync2/csync2.conf',
+        path    => '/etc/init/csync2-inotify.conf',
+        require => File['/usr/local/bin/csync2-inotify'],
+      }
+    }
+
+  'systemd': {
+      #Basic upstart init script for inotify
+      file { 'csync2-service':
+        ensure  => $ensure,
+        path    => '/etc/systemd/system/csync2-inotify.service',
+        source  => 'puppet:///modules/csync2/csync2-inotify.service',
+        require => File['/usr/local/bin/csync2-inotify'],
+        notify  => Exec['reload-systemd'],
+      }
+      exec { 'reload-systemd':
+        command      => '/usr/bin/systemctl daemon-reload',
+        refreshonly => true,
+      }
+    }
   }
 
   #Selector for turning 'present' to true
@@ -38,11 +59,10 @@ class csync2::inotify (
   }
 
   #Start the csync2 service
-  service { 'csync2':
+  service { 'csync2-inotify':
     ensure  => $service_ensure,
     enable  => $service_ensure,
-    require => File['/etc/init/csync2.conf'],
+    require => File['csync2-service'],
   }
-
 
 }
