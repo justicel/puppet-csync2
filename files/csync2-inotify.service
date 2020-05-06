@@ -1,0 +1,12 @@
+[Unit]
+Description=csync2-inotify Service
+After=xinetd.service
+
+[Service]
+Type=simple
+User=root
+ExecStart=/usr/local/bin/csync2-inotify
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
